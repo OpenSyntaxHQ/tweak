@@ -59,16 +59,41 @@ nfpms:
       - archlinux
     bindir: /usr/bin
 
-brews:
+homebrew_casks:
   - repository:
       owner: OpenSyntaxHQ
       name: homebrew-tweak
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     name: tweak
     homepage: "https://github.com/OpenSyntaxHQ/tweak"
-    description: "A cross-platform CLI for 118+ text transformations."
-    license: "Apache-2.0"
-    skip_upload: auto
-    install: |-
-      bin.install "tweak"
-    test: |
-      system "#{bin}/tweak --version"
+    description: "Fast CLI + TUI for text processing: encoding, hashing, transforms, and more."
+
+dockers_v2:
+  - images:
+      - "ghcr.io/opensyntaxhq/tweak"
+    tags:
+      - "{{ .Version }}"
+      - "latest"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    labels:
+      org.opencontainers.image.created: "{{.Date}}"
+      org.opencontainers.image.title: "{{.ProjectName}}"
+      org.opencontainers.image.revision: "{{.FullCommit}}"
+      org.opencontainers.image.version: "{{.Version}}"
+
+sboms:
+  - artifacts: archive
+
+signs:
+  - cmd: cosign
+    env:
+      - COSIGN_EXPERIMENTAL=1
+    args:
+      - "sign-blob"
+      - "--yes"
+      - "--output-signature=${signature}"
+      - "--output-certificate=${certificate}"
+      - "${artifact}"
+    artifacts: checksum
