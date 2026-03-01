@@ -1,0 +1,68 @@
+site_name: Tweak
+site_url: https://opensyntaxhq.github.io/tweak/
+site_description: "Fast CLI + TUI for text processing: encoding, hashing, transforms, and more."
+repo_url: https://github.com/OpenSyntaxHQ/tweak
+repo_name: OpenSyntaxHQ/tweak
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  logo: assets/banner.png
+  favicon: assets/banner.png
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.suggest
+
+nav:
+  - Home: index.md
+  - Installation: install.md
+  - Usage: usage.md
+  - Commands:
+      - Encoding & Decoding: commands/encoding.md
+      - Hashing & Checksums: commands/hashing.md
+      - Cryptography: commands/crypto.md
+      - String Operations: commands/strings.md
+      - JSON & Data Formats: commands/json.md
+      - Generators: commands/generators.md
+      - Text Processing: commands/text.md
+      - Validation & Detection: commands/validation.md
+  - Contributing: contributing.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/OpenSyntaxHQ/tweak
