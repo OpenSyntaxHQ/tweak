@@ -1,0 +1,74 @@
+project_name: "tweak"
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate
+
+builds:
+  - main: ./main.go
+    binary: tweak
+    goos: [linux, darwin, windows, freebsd]
+    goarch: [386, amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X "main.version={{.Version}}"
+    env:
+      - CGO_ENABLED=0
+
+universal_binaries:
+  - replace: true
+
+archives:
+  - formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "Merge pull request"
+      - "Merge branch"
+
+nfpms:
+  - ids:
+      - tweak
+    vendor: OpenSyntaxHQ
+    homepage: "https://github.com/OpenSyntaxHQ/tweak"
+    maintainer: "OpenSyntaxHQ"
+    description: "Fast CLI + TUI for text processing: encoding, hashing, transforms, and more."
+    license: Apache-2.0
+    formats:
+      - deb
+      - rpm
+      - archlinux
+    bindir: /usr/bin
+
+brews:
+  - repository:
+      owner: OpenSyntaxHQ
+      name: homebrew-tweak
+    name: tweak
+    homepage: "https://github.com/OpenSyntaxHQ/tweak"
+    description: "A cross-platform CLI for 118+ text transformations."
+    license: "Apache-2.0"
+    skip_upload: auto
+    install: |-
+      bin.install "tweak"
+    test: |
+      system "#{bin}/tweak --version"
