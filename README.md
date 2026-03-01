@@ -1,4 +1,7 @@
-![tweak](./docs/assets/banner.png)
+<p align="center">
+  <img src="./docs/assets/banner.png" width="100%" alt="tweak banner">
+</p>
+
 
 # tweak
 
