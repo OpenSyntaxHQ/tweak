@@ -1,0 +1,58 @@
+package processors
+
+import (
+	"encoding/base64"
+	"fmt"
+)
+
+var base64RawFlag = Flag{
+	Name: "raw", Short: "r",
+	Desc: "unpadded base64 encoding", Value: false, Type: FlagBool,
+}
+
+func checkBase64RawFlag(f []Flag) bool {
+	for _, flag := range f {
+		if flag.Name == "raw" || flag.Short == "r" {
+			if r, ok := flag.Value.(bool); ok {
+				return r
+			}
+		}
+	}
+	return false
+}
+
+type Base64Encode struct{}
+
+func (p Base64Encode) Name() string    { return "base64-encode" }
+func (p Base64Encode) Alias() []string { return []string{"b64-enc", "b64-encode"} }
+
+func (p Base64Encode) Transform(data []byte, f ...Flag) (string, error) {
+	if checkBase64RawFlag(f) {
+		return base64.RawStdEncoding.EncodeToString(data), nil
+	}
+	return base64.StdEncoding.EncodeToString(data), nil
+}
+
+func (p Base64Encode) Flags() []Flag       { return []Flag{base64RawFlag} }
+func (p Base64Encode) Title() string       { return fmt.Sprintf("Base64 Encoding (%s)", p.Name()) }
+func (p Base64Encode) Description() string { return "Encode your text to Base64" }
+func (p Base64Encode) FilterValue() string { return p.Title() }
+
+type Base64Decode struct{}
+
+func (p Base64Decode) Name() string    { return "base64-decode" }
+func (p Base64Decode) Alias() []string { return []string{"b64-dec", "b64-decode"} }
+
+func (p Base64Decode) Transform(data []byte, f ...Flag) (string, error) {
+	if checkBase64RawFlag(f) {
+		decoded, err := base64.RawStdEncoding.DecodeString(string(data))
+		return string(decoded), err
+	}
+	decoded, err := base64.StdEncoding.DecodeString(string(data))
+	return string(decoded), err
+}
+
+func (p Base64Decode) Flags() []Flag       { return []Flag{base64RawFlag} }
+func (p Base64Decode) Title() string       { return fmt.Sprintf("Base64 Decode (%s)", p.Name()) }
+func (p Base64Decode) Description() string { return "Decode your Base64 text" }
+func (p Base64Decode) FilterValue() string { return p.Title() }
