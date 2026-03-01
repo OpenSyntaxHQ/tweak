@@ -1,0 +1,17 @@
+# Binaries
+tweak
+tweak.exe
+
+# GoReleaser output
+dist/
+
+# Test artifacts
+*.test
+*.out
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
