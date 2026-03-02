@@ -155,3 +155,108 @@ func TestWordFrequency_Transform(t *testing.T) {
 func TestEscapeQuotes_Transform(t *testing.T) {
 	assertTransform(t, processors.EscapeQuotes{}, `say "hello"`, nil, `say \"hello\"`, false)
 }
+
+func TestEscapeQuotes_FlagVariants(t *testing.T) {
+	p := processors.EscapeQuotes{}
+
+	doubleOnly, err := p.Transform(
+		[]byte(`say "hello" and 'bye'`),
+		processors.Flag{Name: "double-quote", Short: "d", Value: true, Type: processors.FlagBool},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(doubleOnly, `\"hello\"`) {
+		t.Fatalf("expected escaped double quotes, got %q", doubleOnly)
+	}
+	if strings.Contains(doubleOnly, `\'bye\'`) {
+		t.Fatalf("did not expect escaped single quotes in double-only mode, got %q", doubleOnly)
+	}
+
+	singleOnly, err := p.Transform(
+		[]byte(`say "hello" and 'bye'`),
+		processors.Flag{Name: "single-quote", Short: "s", Value: true, Type: processors.FlagBool},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(singleOnly, `\'bye\'`) {
+		t.Fatalf("expected escaped single quotes, got %q", singleOnly)
+	}
+	if strings.Contains(singleOnly, `\"hello\"`) {
+		t.Fatalf("did not expect escaped double quotes in single-only mode, got %q", singleOnly)
+	}
+}
+
+func TestWrap_ZeroWidthAndWhitespaceInput(t *testing.T) {
+	p := processors.Wrap{}
+
+	unchanged, err := p.Transform(
+		[]byte("this text should stay unchanged"),
+		processors.Flag{Name: "width", Short: "w", Value: uint(0), Type: processors.FlagUint},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if unchanged != "this text should stay unchanged" {
+		t.Fatalf("wrap width=0 should return input unchanged, got %q", unchanged)
+	}
+
+	empty, err := p.Transform([]byte("   \t   "))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if empty != "" {
+		t.Fatalf("wrap on whitespace-only input should be empty, got %q", empty)
+	}
+}
+
+func TestReplaceText_NoFindFlag(t *testing.T) {
+	p := processors.ReplaceText{}
+	got, err := p.Transform([]byte("foo bar baz"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "foo bar baz" {
+		t.Fatalf("replace without find flag should keep input, got %q", got)
+	}
+}
+
+func TestCharFrequency_SpecialCharacterLabels(t *testing.T) {
+	got, err := (processors.CharFrequency{}).Transform([]byte(" \n\t"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(got, "[space]: 1") {
+		t.Fatalf("expected [space] label in output, got %q", got)
+	}
+	if !strings.Contains(got, `\n: 1`) {
+		t.Fatalf("expected newline label in output, got %q", got)
+	}
+	if !strings.Contains(got, `\t: 1`) {
+		t.Fatalf("expected tab label in output, got %q", got)
+	}
+}
+
+func TestWordFrequency_CaseInsensitive(t *testing.T) {
+	got, err := (processors.WordFrequency{}).Transform([]byte("Go go GO gO"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(got, "go: 4") {
+		t.Fatalf("expected case-insensitive aggregation, got %q", got)
+	}
+}
+
+func TestRepeat_ZeroCount(t *testing.T) {
+	got, err := (processors.Repeat{}).Transform(
+		[]byte("abc"),
+		processors.Flag{Name: "count", Short: "c", Value: uint(0), Type: processors.FlagUint},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != "" {
+		t.Fatalf("repeat count 0 should be empty string, got %q", got)
+	}
+}
