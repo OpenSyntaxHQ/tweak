@@ -48,7 +48,7 @@ jobs:
           go test -count=1 -coverpkg=./processors/... -coverprofile=coverage.out ./tests/...
           COVERAGE=$(go tool cover -func=coverage.out | awk '/^total:/ {gsub("%","",$3); print $3}')
           echo "Total coverage: ${COVERAGE}%"
-          awk -v c="$COVERAGE" 'BEGIN { if (c+0 < 50) { exit 1 } }'
+          awk -v c="$COVERAGE" 'BEGIN { if (c+0 < 75) { exit 1 } }'
 
       - name: GoReleaser config check
         if: matrix.os == 'ubuntu-latest'

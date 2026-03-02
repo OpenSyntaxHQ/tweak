@@ -60,6 +60,18 @@ func TestMyProcessor_Transform(t *testing.T) {
 go test -v -race -count=1 ./tests/...
 ```
 
+## Test Expectations for New Processors
+
+- Add tests that cover:
+  - normal transform behavior
+  - at least one error or edge-case path (for example invalid input or missing required flags)
+- Keep processor coverage healthy with:
+
+```bash
+go test -count=1 -coverpkg=./processors/... -coverprofile=coverage.out ./tests/...
+go tool cover -func=coverage.out
+```
+
 ## License
 
 By contributing, you agree your contributions will be licensed under the Apache 2.0 License.
