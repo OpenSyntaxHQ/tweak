@@ -21,3 +21,5 @@ cat log.txt | tweak extract-emails
 cat page.html | tweak extract-urls
 cat access.log | tweak extract-ips
 ```
+
+`validate-json`, `validate-email`, and `validate-url` return non-zero exit codes on invalid input.

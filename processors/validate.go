@@ -15,14 +15,14 @@ func (p ValidateJSON) Name() string    { return "validate-json" }
 func (p ValidateJSON) Alias() []string { return []string{"is-json"} }
 func (p ValidateJSON) Transform(data []byte, _ ...Flag) (string, error) {
 	if len(strings.TrimSpace(string(data))) == 0 {
-		return "❌ Invalid JSON: empty input", nil
+		return "", fmt.Errorf("invalid JSON: empty input")
 	}
 	if json.Valid(data) {
-		return "✅ Valid JSON", nil
+		return "Valid JSON", nil
 	}
 	var js json.RawMessage
 	err := json.Unmarshal(data, &js)
-	return fmt.Sprintf("❌ Invalid JSON: %v", err), nil
+	return "", fmt.Errorf("invalid JSON: %w", err)
 }
 func (p ValidateJSON) Flags() []Flag       { return nil }
 func (p ValidateJSON) Title() string       { return fmt.Sprintf("Validate JSON (%s)", p.Name()) }
@@ -36,13 +36,13 @@ func (p ValidateEmail) Alias() []string { return []string{"is-email"} }
 func (p ValidateEmail) Transform(data []byte, _ ...Flag) (string, error) {
 	input := strings.TrimSpace(string(data))
 	if len(input) == 0 {
-		return "❌ Invalid Email: empty input", nil
+		return "", fmt.Errorf("invalid email: empty input")
 	}
 	parsed, err := emailaddress.Parse(input)
 	if err == nil && parsed.String() != "" && parsed.String() == input {
-		return fmt.Sprintf("✅ Valid Email\n  Local:  %s\n  Domain: %s", parsed.LocalPart, parsed.Domain), nil
+		return fmt.Sprintf("Valid Email\n  Local:  %s\n  Domain: %s", parsed.LocalPart, parsed.Domain), nil
 	}
-	return "❌ Invalid Email format", nil
+	return "", fmt.Errorf("invalid email format")
 }
 func (p ValidateEmail) Flags() []Flag       { return nil }
 func (p ValidateEmail) Title() string       { return fmt.Sprintf("Validate Email (%s)", p.Name()) }
@@ -56,15 +56,15 @@ func (p ValidateURL) Alias() []string { return []string{"is-url"} }
 func (p ValidateURL) Transform(data []byte, _ ...Flag) (string, error) {
 	input := strings.TrimSpace(string(data))
 	if len(input) == 0 {
-		return "❌ Invalid URL: empty input", nil
+		return "", fmt.Errorf("invalid URL: empty input")
 	}
 	rxStrict := xurls.Strict()
 	match := rxStrict.FindString(input)
 
 	if match != "" && match == input {
-		return "✅ Valid URL", nil
+		return "Valid URL", nil
 	}
-	return "❌ Invalid URL format (must include scheme like http:// or https://)", nil
+	return "", fmt.Errorf("invalid URL format (must include scheme like http:// or https://)")
 }
 func (p ValidateURL) Flags() []Flag       { return nil }
 func (p ValidateURL) Title() string       { return fmt.Sprintf("Validate URL (%s)", p.Name()) }

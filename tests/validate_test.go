@@ -29,9 +29,9 @@ func TestValidateJSON_Valid(t *testing.T) {
 func TestValidateJSON_Invalid(t *testing.T) {
 	inputs := []string{`not json`, `{bad}`, `[1,2,`}
 	for _, in := range inputs {
-		got, _ := processors.ValidateJSON{}.Transform([]byte(in))
-		if !strings.Contains(got, "Invalid") {
-			t.Errorf("ValidateJSON(%q) should be Invalid, got: %q", in, got)
+		_, err := processors.ValidateJSON{}.Transform([]byte(in))
+		if err == nil {
+			t.Errorf("ValidateJSON(%q) expected an error for invalid input", in)
 		}
 	}
 }
@@ -52,9 +52,9 @@ func TestValidateEmail_Valid(t *testing.T) {
 func TestValidateEmail_Invalid(t *testing.T) {
 	inputs := []string{"not-an-email", "@no-local.com", "no-at-sign"}
 	for _, in := range inputs {
-		got, _ := processors.ValidateEmail{}.Transform([]byte(in))
-		if !strings.Contains(got, "Invalid") {
-			t.Errorf("ValidateEmail(%q) should be Invalid, got: %q", in, got)
+		_, err := processors.ValidateEmail{}.Transform([]byte(in))
+		if err == nil {
+			t.Errorf("ValidateEmail(%q) expected an error for invalid input", in)
 		}
 	}
 }
@@ -75,9 +75,9 @@ func TestValidateURL_Valid(t *testing.T) {
 func TestValidateURL_Invalid(t *testing.T) {
 	inputs := []string{"not a url", "ftp://", "just text"}
 	for _, in := range inputs {
-		got, _ := processors.ValidateURL{}.Transform([]byte(in))
-		if !strings.Contains(got, "Invalid") {
-			t.Errorf("ValidateURL(%q) should be Invalid, got: %q", in, got)
+		_, err := processors.ValidateURL{}.Transform([]byte(in))
+		if err == nil {
+			t.Errorf("ValidateURL(%q) expected an error for invalid input", in)
 		}
 	}
 }
