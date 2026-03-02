@@ -5,6 +5,9 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 var loremWords = []string{
@@ -17,6 +20,8 @@ var loremWords = []string{
 	"occaecat", "cupidatat", "non", "proident", "sunt", "culpa", "qui", "officia",
 	"deserunt", "mollit", "anim", "id", "est", "laborum",
 }
+
+var loremTitleCaser = cases.Title(language.Und, cases.NoLower)
 
 type Lorem struct{}
 
@@ -43,7 +48,7 @@ func (p Lorem) Transform(_ []byte, f ...Flag) (string, error) {
 			for w := 0; w < wordCount; w++ {
 				words[w] = loremWords[r.Intn(len(loremWords))]
 			}
-			words[0] = strings.Title(words[0]) //nolint:staticcheck
+			words[0] = loremTitleCaser.String(words[0])
 			sents = append(sents, strings.Join(words, " ")+".")
 		}
 		pars = append(pars, strings.Join(sents, " "))
