@@ -28,13 +28,11 @@ Complete documentation is available at https://github.com/OpenSyntaxHQ/tweak`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
 			x := ui.New("")
-			x.Render()
+			return x.Render()
 		}
-		return nil
+		return cmd.Help()
 	},
 }
-
-func init() {}
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
