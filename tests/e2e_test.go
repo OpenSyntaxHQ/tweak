@@ -56,9 +56,19 @@ func TestE2E(t *testing.T) {
 			expectedOutput: "MAKE ME LOUD",
 		},
 		{
-			name:           "Invalid Command Error",
-			args:           []string{"fake-command-123"},
-			expectError:    true,
+			name:        "Invalid Command Error",
+			args:        []string{"fake-command-123"},
+			expectError: true,
+		},
+		{
+			name:        "AES Encrypt Missing Required Key",
+			args:        []string{"aes-encrypt", "hello"},
+			expectError: true,
+		},
+		{
+			name:        "Regex Match Missing Required Pattern",
+			args:        []string{"regex-match", "hello"},
+			expectError: true,
 		},
 	}
 
