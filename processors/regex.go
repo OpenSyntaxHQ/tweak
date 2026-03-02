@@ -32,7 +32,7 @@ func (p RegexMatch) Transform(data []byte, f ...Flag) (string, error) {
 }
 
 func (p RegexMatch) Flags() []Flag {
-	return []Flag{{Name: "pattern", Short: "p", Desc: "Regular expression pattern", Value: "", Type: FlagString}}
+	return []Flag{{Name: "pattern", Short: "p", Desc: "Regular expression pattern", Value: "", Type: FlagString, Required: true}}
 }
 func (p RegexMatch) Title() string       { return fmt.Sprintf("Regex Match (%s)", p.Name()) }
 func (p RegexMatch) Description() string { return "Extract all regex matches" }
@@ -69,7 +69,7 @@ func (p RegexReplace) Transform(data []byte, f ...Flag) (string, error) {
 
 func (p RegexReplace) Flags() []Flag {
 	return []Flag{
-		{Name: "pattern", Short: "p", Desc: "Regular expression pattern", Value: "", Type: FlagString},
+		{Name: "pattern", Short: "p", Desc: "Regular expression pattern", Value: "", Type: FlagString, Required: true},
 		{Name: "replacement", Short: "r", Desc: "Replacement string", Value: "", Type: FlagString},
 	}
 }

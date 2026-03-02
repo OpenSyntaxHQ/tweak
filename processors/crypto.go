@@ -13,8 +13,8 @@ import (
 
 type MD5 struct{}
 
-func (p MD5) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true, LineByLine: false}
+func (p MD5) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p MD5) Name() string    { return "md5" }
 func (p MD5) Alias() []string { return []string{"md5-sum"} }
@@ -30,8 +30,8 @@ func (p MD5) FilterValue() string { return p.Title() }
 
 type SHA1 struct{}
 
-func (p SHA1) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SHA1) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p SHA1) Name() string    { return "sha1" }
 func (p SHA1) Alias() []string { return []string{"sha1-sum"} }
@@ -47,8 +47,8 @@ func (p SHA1) FilterValue() string { return p.Title() }
 
 type SHA224 struct{}
 
-func (p SHA224) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SHA224) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p SHA224) Name() string    { return "sha224" }
 func (p SHA224) Alias() []string { return []string{"sha224-sum"} }
@@ -63,8 +63,8 @@ func (p SHA224) FilterValue() string { return p.Title() }
 
 type SHA256 struct{}
 
-func (p SHA256) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SHA256) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p SHA256) Name() string    { return "sha256" }
 func (p SHA256) Alias() []string { return []string{"sha256-sum"} }
@@ -80,8 +80,8 @@ func (p SHA256) FilterValue() string { return p.Title() }
 
 type SHA384 struct{}
 
-func (p SHA384) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SHA384) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p SHA384) Name() string    { return "sha384" }
 func (p SHA384) Alias() []string { return []string{"sha384-sum"} }
@@ -96,8 +96,8 @@ func (p SHA384) FilterValue() string { return p.Title() }
 
 type SHA512 struct{}
 
-func (p SHA512) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SHA512) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p SHA512) Name() string    { return "sha512" }
 func (p SHA512) Alias() []string { return []string{"sha512-sum"} }

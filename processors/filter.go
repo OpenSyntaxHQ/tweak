@@ -47,7 +47,7 @@ func (p Grep) Transform(data []byte, f ...Flag) (string, error) {
 }
 func (p Grep) Flags() []Flag {
 	return []Flag{
-		{Name: "pattern", Short: "p", Desc: "Regex pattern to match", Value: "", Type: FlagString},
+		{Name: "pattern", Short: "p", Desc: "Regex pattern to match", Value: "", Type: FlagString, Required: true},
 		{Name: "invert", Short: "v", Desc: "Invert match (exclude matching lines)", Value: false, Type: FlagBool},
 	}
 }

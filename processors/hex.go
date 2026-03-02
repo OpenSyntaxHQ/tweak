@@ -14,8 +14,8 @@ type HexEncode struct{}
 
 func (p HexEncode) Name() string    { return "hex-encode" }
 func (p HexEncode) Alias() []string { return []string{"hex-enc", "hexadecimal-encode"} }
-func (p HexEncode) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: false, LineByLine: false}
+func (p HexEncode) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeChunked, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p HexEncode) Transform(data []byte, _ ...Flag) (string, error) {
 	return hex.EncodeToString(data), nil
@@ -29,8 +29,8 @@ type HexDecode struct{}
 
 func (p HexDecode) Name() string    { return "hex-decode" }
 func (p HexDecode) Alias() []string { return []string{"hex-dec", "hexadecimal-decode"} }
-func (p HexDecode) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true, LineByLine: false}
+func (p HexDecode) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024, Prefer: true}
 }
 func (p HexDecode) Transform(data []byte, _ ...Flag) (string, error) {
 	output, err := hex.DecodeString(string(data))

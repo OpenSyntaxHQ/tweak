@@ -17,29 +17,33 @@ var whitespaceNormRe = regexp.MustCompile(`\s+`)
 
 type Lower struct{}
 
-func (p Lower) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: false}
+func (p Lower) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeChunked, ChunkSize: 64 * 1024, Prefer: true}
 }
-func (p Lower) Name() string                        { return "lower" }
-func (p Lower) Alias() []string                     { return nil }
-func (p Lower) Transform(data []byte, _ ...Flag) (string, error) { return strings.ToLower(string(data)), nil }
-func (p Lower) Flags() []Flag                       { return nil }
-func (p Lower) Title() string                       { return fmt.Sprintf("To Lower case (%s)", p.Name()) }
-func (p Lower) Description() string                 { return "Transform your text to lower case" }
-func (p Lower) FilterValue() string                 { return p.Title() }
+func (p Lower) Name() string    { return "lower" }
+func (p Lower) Alias() []string { return nil }
+func (p Lower) Transform(data []byte, _ ...Flag) (string, error) {
+	return strings.ToLower(string(data)), nil
+}
+func (p Lower) Flags() []Flag       { return nil }
+func (p Lower) Title() string       { return fmt.Sprintf("To Lower case (%s)", p.Name()) }
+func (p Lower) Description() string { return "Transform your text to lower case" }
+func (p Lower) FilterValue() string { return p.Title() }
 
 type Upper struct{}
 
-func (p Upper) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: false}
+func (p Upper) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeChunked, ChunkSize: 64 * 1024, Prefer: true}
 }
-func (p Upper) Name() string                        { return "upper" }
-func (p Upper) Alias() []string                     { return nil }
-func (p Upper) Transform(data []byte, _ ...Flag) (string, error) { return strings.ToUpper(string(data)), nil }
-func (p Upper) Flags() []Flag                       { return nil }
-func (p Upper) Title() string                       { return fmt.Sprintf("To Upper case (%s)", p.Name()) }
-func (p Upper) Description() string                 { return "Transform your text to UPPER CASE" }
-func (p Upper) FilterValue() string                 { return p.Title() }
+func (p Upper) Name() string    { return "upper" }
+func (p Upper) Alias() []string { return nil }
+func (p Upper) Transform(data []byte, _ ...Flag) (string, error) {
+	return strings.ToUpper(string(data)), nil
+}
+func (p Upper) Flags() []Flag       { return nil }
+func (p Upper) Title() string       { return fmt.Sprintf("To Upper case (%s)", p.Name()) }
+func (p Upper) Description() string { return "Transform your text to UPPER CASE" }
+func (p Upper) FilterValue() string { return p.Title() }
 
 type Title struct{}
 
@@ -175,23 +179,27 @@ func (p EscapeQuotes) FilterValue() string { return p.Title() }
 
 type CountCharacters struct{}
 
-func (p CountCharacters) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p CountCharacters) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p CountCharacters) Name() string    { return "count-chars" }
 func (p CountCharacters) Alias() []string { return nil }
 func (p CountCharacters) Transform(data []byte, _ ...Flag) (string, error) {
 	return fmt.Sprintf("%d", len([]rune(string(data)))), nil
 }
-func (p CountCharacters) Flags() []Flag       { return nil }
-func (p CountCharacters) Title() string       { return fmt.Sprintf("Count Number of Characters (%s)", p.Name()) }
-func (p CountCharacters) Description() string { return "Find the length of your text (including spaces)" }
+func (p CountCharacters) Flags() []Flag { return nil }
+func (p CountCharacters) Title() string {
+	return fmt.Sprintf("Count Number of Characters (%s)", p.Name())
+}
+func (p CountCharacters) Description() string {
+	return "Find the length of your text (including spaces)"
+}
 func (p CountCharacters) FilterValue() string { return p.Title() }
 
 type CountWords struct{}
 
-func (p CountWords) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p CountWords) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p CountWords) Name() string    { return "count-words" }
 func (p CountWords) Alias() []string { return nil }

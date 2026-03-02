@@ -8,11 +8,13 @@ import (
 
 type NumberLines struct{}
 
-func (p NumberLines) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p NumberLines) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
-func (p NumberLines) Name() string    { return "number-lines" }
-func (p NumberLines) Alias() []string { return []string{"nl", "line-numbers", "line-number", "number-line", "numberlines", "numberline"} }
+func (p NumberLines) Name() string { return "number-lines" }
+func (p NumberLines) Alias() []string {
+	return []string{"nl", "line-numbers", "line-number", "number-line", "numberlines", "numberline"}
+}
 
 func (p NumberLines) Transform(data []byte, _ ...Flag) (string, error) {
 	lines := strings.Split(string(data), "\n")

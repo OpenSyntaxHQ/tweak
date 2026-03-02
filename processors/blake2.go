@@ -11,8 +11,9 @@ import (
 
 type BLAKE2b struct{}
 
-func (p BLAKE2b) CanStream() bool    { return true }
-func (p BLAKE2b) PreferStream() bool { return true }
+func (p BLAKE2b) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeNative, Prefer: true}
+}
 
 func (p BLAKE2b) TransformStream(reader io.Reader, writer io.Writer, opts ...Flag) error {
 	size := getBlake2bSize(opts)
@@ -64,8 +65,9 @@ func getBlake2bSize(f []Flag) uint {
 
 type BLAKE2s struct{}
 
-func (p BLAKE2s) CanStream() bool    { return true }
-func (p BLAKE2s) PreferStream() bool { return true }
+func (p BLAKE2s) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeNative, Prefer: true}
+}
 
 func (p BLAKE2s) TransformStream(reader io.Reader, writer io.Writer, _ ...Flag) error {
 	hasher, err := blake2s.New256(nil)

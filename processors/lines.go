@@ -12,8 +12,8 @@ import (
 
 type CountLines struct{}
 
-func (p CountLines) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p CountLines) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p CountLines) Name() string    { return "count-lines" }
 func (p CountLines) Alias() []string { return nil }
@@ -35,8 +35,8 @@ func (p CountLines) FilterValue() string { return p.Title() }
 
 type SortLines struct{}
 
-func (p SortLines) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p SortLines) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p SortLines) Name() string    { return "sort-lines" }
 func (p SortLines) Alias() []string { return nil }
@@ -74,8 +74,8 @@ func (p ShuffleLines) FilterValue() string { return p.Title() }
 
 type UniqueLines struct{}
 
-func (p UniqueLines) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p UniqueLines) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p UniqueLines) Name() string    { return "unique-lines" }
 func (p UniqueLines) Alias() []string { return nil }
@@ -107,8 +107,8 @@ func (p UniqueLines) FilterValue() string { return p.Title() }
 
 type ReverseLines struct{}
 
-func (p ReverseLines) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p ReverseLines) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p ReverseLines) Name() string    { return "reverse-lines" }
 func (p ReverseLines) Alias() []string { return nil }

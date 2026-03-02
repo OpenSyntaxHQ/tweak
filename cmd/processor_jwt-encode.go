@@ -19,6 +19,7 @@ var (
 func init() {
 	jwtEncodeCmd.Flags().StringVarP(&jwtEncode_flag_s, "secret", "s", "", "HMAC signing secret")	
 	jwtEncodeCmd.Flags().UintVarP(&jwtEncode_flag_e, "exp", "e", 24, "Expiry in hours from now")
+	_ = jwtEncodeCmd.MarkFlagRequired("secret")
 	rootCmd.AddCommand(jwtEncodeCmd)
 }
 
@@ -55,7 +56,7 @@ var jwtEncodeCmd = &cobra.Command{
 			if fi, statErr := os.Stat(args[0]); statErr == nil && !fi.IsDir() {
 				const largeFileThreshold = 10 * 1024 * 1024 // 10 MiB
 
-				if processors.CanStream(p) && (fi.Size() > largeFileThreshold || processors.PreferStream(p)) {
+				if processors.ShouldStream(p, fi.Size(), largeFileThreshold) {
 					file, fErr := os.Open(args[0])
 					if fErr != nil {
 						return fErr

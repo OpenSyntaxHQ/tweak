@@ -51,7 +51,7 @@ func (p AESEncrypt) Transform(data []byte, f ...Flag) (string, error) {
 	return base64.StdEncoding.EncodeToString(ciphertext), nil
 }
 func (p AESEncrypt) Flags() []Flag {
-	return []Flag{{Name: "key", Short: "k", Desc: "Encryption passphrase", Value: "", Type: FlagString}}
+	return []Flag{{Name: "key", Short: "k", Desc: "Encryption passphrase", Value: "", Type: FlagString, Required: true, Sensitive: true}}
 }
 func (p AESEncrypt) Title() string {
 	return fmt.Sprintf("%s (%s)", cases.Title(language.Und, cases.NoLower).String(p.Name()), p.Name())
@@ -100,7 +100,7 @@ func (p AESDecrypt) Transform(data []byte, f ...Flag) (string, error) {
 	return string(plaintext), nil
 }
 func (p AESDecrypt) Flags() []Flag {
-	return []Flag{{Name: "key", Short: "k", Desc: "Decryption passphrase", Value: "", Type: FlagString}}
+	return []Flag{{Name: "key", Short: "k", Desc: "Decryption passphrase", Value: "", Type: FlagString, Required: true, Sensitive: true}}
 }
 func (p AESDecrypt) Title() string {
 	return fmt.Sprintf("%s (%s)", cases.Title(language.Und, cases.NoLower).String(p.Name()), p.Name())

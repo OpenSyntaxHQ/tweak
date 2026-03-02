@@ -64,8 +64,8 @@ func (p QRCode) Flags() []Flag {
 		{Name: "full", Short: "f", Desc: "Use full blocks", Value: false, Type: FlagBool},
 	}
 }
-func (p QRCode) GetStreamingConfig() StreamingConfig {
-	return StreamingConfig{ChunkSize: 64 * 1024, BufferOutput: true}
+func (p QRCode) StreamingSpec() StreamingSpec {
+	return StreamingSpec{Mode: StreamingModeBuffered, ChunkSize: 64 * 1024}
 }
 func (p QRCode) Title() string       { return fmt.Sprintf("QR Code (%s)", p.Name()) }
 func (p QRCode) Description() string { return "Generate QR code in terminal" }

@@ -32,7 +32,7 @@ func (p HMACSHA256) Transform(data []byte, f ...Flag) (string, error) {
 	return hex.EncodeToString(mac.Sum(nil)), nil
 }
 func (p HMACSHA256) Flags() []Flag {
-	return []Flag{{Name: "key", Short: "k", Desc: "HMAC secret key", Value: "", Type: FlagString}}
+	return []Flag{{Name: "key", Short: "k", Desc: "HMAC secret key", Value: "", Type: FlagString, Required: true, Sensitive: true}}
 }
 func (p HMACSHA256) Title() string {
 	return fmt.Sprintf("%s (%s)", cases.Title(language.Und, cases.NoLower).String(p.Name()), p.Name())
@@ -61,7 +61,7 @@ func (p HMACSHA512) Transform(data []byte, f ...Flag) (string, error) {
 	return hex.EncodeToString(mac.Sum(nil)), nil
 }
 func (p HMACSHA512) Flags() []Flag {
-	return []Flag{{Name: "key", Short: "k", Desc: "HMAC secret key", Value: "", Type: FlagString}}
+	return []Flag{{Name: "key", Short: "k", Desc: "HMAC secret key", Value: "", Type: FlagString, Required: true, Sensitive: true}}
 }
 func (p HMACSHA512) Title() string {
 	return fmt.Sprintf("%s (%s)", cases.Title(language.Und, cases.NoLower).String(p.Name()), p.Name())

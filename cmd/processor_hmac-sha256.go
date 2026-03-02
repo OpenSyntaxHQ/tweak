@@ -15,6 +15,7 @@ var hmacSha256_flag_k string
 
 func init() {
 	hmacSha256Cmd.Flags().StringVarP(&hmacSha256_flag_k, "key", "k", "", "HMAC secret key")
+	_ = hmacSha256Cmd.MarkFlagRequired("key")
 	rootCmd.AddCommand(hmacSha256Cmd)
 }
 
@@ -50,7 +51,7 @@ var hmacSha256Cmd = &cobra.Command{
 			if fi, statErr := os.Stat(args[0]); statErr == nil && !fi.IsDir() {
 				const largeFileThreshold = 10 * 1024 * 1024 // 10 MiB
 
-				if processors.CanStream(p) && (fi.Size() > largeFileThreshold || processors.PreferStream(p)) {
+				if processors.ShouldStream(p, fi.Size(), largeFileThreshold) {
 					file, fErr := os.Open(args[0])
 					if fErr != nil {
 						return fErr

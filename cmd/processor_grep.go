@@ -19,6 +19,7 @@ var (
 func init() {
 	grepCmd.Flags().StringVarP(&grep_flag_p, "pattern", "p", "", "Regex pattern to match")	
 	grepCmd.Flags().BoolVarP(&grep_flag_v, "invert", "v", false, "Invert match (exclude matching lines)")
+	_ = grepCmd.MarkFlagRequired("pattern")
 	rootCmd.AddCommand(grepCmd)
 }
 
@@ -55,7 +56,7 @@ var grepCmd = &cobra.Command{
 			if fi, statErr := os.Stat(args[0]); statErr == nil && !fi.IsDir() {
 				const largeFileThreshold = 10 * 1024 * 1024 // 10 MiB
 
-				if processors.CanStream(p) && (fi.Size() > largeFileThreshold || processors.PreferStream(p)) {
+				if processors.ShouldStream(p, fi.Size(), largeFileThreshold) {
 					file, fErr := os.Open(args[0])
 					if fErr != nil {
 						return fErr

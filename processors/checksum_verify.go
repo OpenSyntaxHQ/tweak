@@ -64,7 +64,7 @@ func (p ChecksumVerify) Transform(data []byte, f ...Flag) (string, error) {
 }
 func (p ChecksumVerify) Flags() []Flag {
 	return []Flag{
-		{Name: "hash", Short: "x", Desc: "Expected hash to verify against", Value: "", Type: FlagString},
+		{Name: "hash", Short: "x", Desc: "Expected hash to verify against", Value: "", Type: FlagString, Required: true},
 		{Name: "algo", Short: "g", Desc: "Hash algorithm (md5/sha1/sha256/sha384/sha512)", Value: "sha256", Type: FlagString},
 	}
 }

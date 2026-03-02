@@ -19,6 +19,7 @@ var (
 func init() {
 	regexReplaceCmd.Flags().StringVarP(&regexReplace_flag_p, "pattern", "p", "", "Regular expression pattern")
 	regexReplaceCmd.Flags().StringVarP(&regexReplace_flag_r, "replacement", "r", "", "Replacement string")
+	_ = regexReplaceCmd.MarkFlagRequired("pattern")
 	rootCmd.AddCommand(regexReplaceCmd)
 }
 
@@ -55,7 +56,7 @@ var regexReplaceCmd = &cobra.Command{
 			if fi, statErr := os.Stat(args[0]); statErr == nil && !fi.IsDir() {
 				const largeFileThreshold = 10 * 1024 * 1024 // 10 MiB
 
-				if processors.CanStream(p) && (fi.Size() > largeFileThreshold || processors.PreferStream(p)) {
+				if processors.ShouldStream(p, fi.Size(), largeFileThreshold) {
 					file, fErr := os.Open(args[0])
 					if fErr != nil {
 						return fErr

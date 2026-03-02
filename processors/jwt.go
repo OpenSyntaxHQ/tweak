@@ -48,7 +48,7 @@ func (p JWTDecode) Transform(data []byte, _ ...Flag) (string, error) {
 	}
 	return string(out), nil
 }
-func (p JWTDecode) Flags() []Flag       { return nil }
+func (p JWTDecode) Flags() []Flag { return nil }
 func (p JWTDecode) Title() string {
 	return fmt.Sprintf("%s (%s)", cases.Title(language.Und, cases.NoLower).String(p.Name()), p.Name())
 }
@@ -100,7 +100,7 @@ func (p JWTEncode) Transform(data []byte, f ...Flag) (string, error) {
 }
 func (p JWTEncode) Flags() []Flag {
 	return []Flag{
-		{Name: "secret", Short: "s", Desc: "HMAC signing secret", Value: "", Type: FlagString},
+		{Name: "secret", Short: "s", Desc: "HMAC signing secret", Value: "", Type: FlagString, Required: true, Sensitive: true},
 		{Name: "exp", Short: "e", Desc: "Expiry in hours from now", Value: uint(24), Type: FlagUint},
 	}
 }
