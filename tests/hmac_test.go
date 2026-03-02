@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/OpenSyntaxHQ/tweak/processors"
@@ -28,5 +27,7 @@ func TestHMACSHA512_Transform(t *testing.T) {
 	if len(got) != 128 {
 		t.Errorf("HMAC-SHA512 want 128 hex chars, got %d", len(got))
 	}
-	if !strings.Contains(got, "") { /* just ensure non-empty */ }
+	if got == "" {
+		t.Error("HMAC-SHA512 should return non-empty output")
+	}
 }
