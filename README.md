@@ -9,7 +9,7 @@
 
 [![CI](https://github.com/OpenSyntaxHQ/tweak/actions/workflows/ci.yml/badge.svg)](https://github.com/OpenSyntaxHQ/tweak/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Go Version](https://img.shields.io/badge/go-1.23+-00ADD8.svg)](go.mod)
+[![Go Version](https://img.shields.io/badge/go-1.26+-00ADD8.svg)](go.mod)
 [![Release](https://img.shields.io/github/v/release/OpenSyntaxHQ/tweak)](https://github.com/OpenSyntaxHQ/tweak/releases)
 [![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows%20%7C%20freebsd-lightgrey)](https://github.com/OpenSyntaxHQ/tweak/releases)
 
@@ -264,6 +264,8 @@ tweak yaml-json input.yaml > output.json
 | `extract-emails` | Extract all emails from text |
 | `extract-urls` | Extract all URLs from text |
 | `extract-ips` | Extract all IP addresses from text |
+
+`validate-*` commands return a non-zero exit code when input is invalid, so they are safe for shell scripting and CI checks.
 
 ---
 
